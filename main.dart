@@ -1,6 +1,8 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const MyApp());
@@ -27,32 +29,24 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   var current = WordPair.random();
+  var remoteTxt = '';
 
   void getNext() {
     current = WordPair.random();
+    fetchData();
     notifyListeners();
   }
-}
 
-class MyAppState2 extends ChangeNotifier {
-  var current = WordPair.random();
-
-  void getRemote() {
-    String _data = 'Click the button to fetch data';
-
-  Future<void> fetchData() async {
-    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
+  void fetchData() async {
+    final response = await http
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
     if (response.statusCode == 200) {
-      // If the call to the server was successful, parse the JSON
       Map<String, dynamic> data = jsonDecode(response.body);
-      setState(() {
-        _data = 'Title: ${data['title']}'; // Update UI with fetched data
-      });
+      remoteTxt = 'Title: ${data['title']}';
+      print(remoteTxt);
     } else {
-      // If that call was not successful, throw an error.
       throw Exception('Failed to load data');
     }
-  }
   }
 }
 
