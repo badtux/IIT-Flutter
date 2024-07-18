@@ -1,0 +1,9 @@
+flutter:
+  fonts:
+    - family: MyCustomFont
+      fonts:
+        - asset: assets/fonts/MyFont-Regular.ttf
+        - asset: assets/fonts/MyFont-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/MyFont-Italic.ttf
+          style: italic
