@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomProgressIndicatorButton extends StatefulWidget {
   @override
@@ -19,13 +20,24 @@ class _CustomProgressIndicatorButtonState
     });
   }
 
+  Future<void> _openYouTubePlaylist() async {
+    final uri = Uri.parse(
+        'https://www.youtube.com/playlist?list=PLWHBGg0vTsI19PIAg4XIT8TvdBW7CfXpd');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $uri';
+    }
+  }
+
   void _showAvatarInfo() {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Avatar Info'),
-          content: Text('This is the profile picture of the user.'),
+          title: Text('Kat Jade'),
+          content: Text(
+              'Kat Jade is a vocalist associated with the Hindley Street Country Club (HSCC), a music group known for its high-quality covers of popular songs.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -53,6 +65,7 @@ class _CustomProgressIndicatorButtonState
         mainAxisSize: MainAxisSize.min,
         children: [
           GestureDetector(
+            onDoubleTap: _openYouTubePlaylist,
             onTap: _showAvatarInfo,
             child: CircleAvatar(
               backgroundImage: NetworkImage(
