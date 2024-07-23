@@ -35,13 +35,24 @@ class _PersonListScreenState extends State<PersonListScreen> {
   }
 
   Future<List<Person>> fetchPeople() async {
-    final response = await http.get(Uri.parse('http://localhost/api.php')); // Update this URL as needed
+    try {
+      final response = await http.get(Uri.parse('https://api.ceynet.asia'));
 
-    if (response.statusCode == 200) {
-      List<dynamic> jsonResponse = json.decode(response.body);
-      return jsonResponse.map((person) => Person.fromJson(person)).toList();
-    } else {
-      throw Exception('Failed to load people');
+      if (response.statusCode == 200) {
+        List<dynamic> jsonResponse = json.decode(response.body);
+        return jsonResponse.map((person) => Person.fromJson(person)).toList();
+      } else {
+        throw Exception(
+            'Failed to load people with status code: ${response.statusCode}');
+      }
+    } on http.ClientException catch (e) {
+      // Handle client exceptions
+      print('ClientException: ${e.message}');
+      throw Exception('ClientException: ${e.message}');
+    } catch (e) {
+      // Handle other exceptions
+      print('Error: $e');
+      throw Exception('Failed to load people due to an unexpected error');
     }
   }
 
