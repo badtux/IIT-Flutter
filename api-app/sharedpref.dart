@@ -60,4 +60,16 @@ class _DataScreenState extends State<DataScreen> {
                 );
               },
             ),
-      
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: () => _addData('Item ${_data.length + 1}'),
+              child: Text('Add Item'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
